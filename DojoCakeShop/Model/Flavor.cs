@@ -1,6 +1,3 @@
 namespace DojoCakeShop.Model;
 
-public enum Flavor
-{
-    
-}
+public record Flavor(string FlavorName, decimal Price);
