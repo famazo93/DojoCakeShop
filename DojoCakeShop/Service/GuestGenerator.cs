@@ -10,9 +10,9 @@ public class GuestGenerator : IGuestGenerator
     {
         _flavorProvider = flavorProvider;
     }
-    public List<Guest> GenerateGuests(int guestNumber)
+    public IList<Guest> GenerateGuests(int guestNumber)
     {
-        List<Guest> guests = new();
+        IList<Guest> guests = new List<Guest>();
         Random random = new Random();
         for (int i = 1; i <= guestNumber; i++)
         {

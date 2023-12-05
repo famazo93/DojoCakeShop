@@ -1,11 +1,12 @@
+using DojoCakeShop.Exception;
 using DojoCakeShop.Model;
 
 namespace DojoCakeShop.Service;
 
 public class CakeShop
 {
-    private ChimneyCakeOven _chimneyCakeOven;
-    private PancakeOven _pancakeOven;
+    private readonly ChimneyCakeOven _chimneyCakeOven;
+    private readonly PancakeOven _pancakeOven;
     private decimal _profit;
 
     public CakeShop(ChimneyCakeOven chimneyCakeOven, PancakeOven pancakeOven)
@@ -17,18 +18,21 @@ public class CakeShop
 
     public void SellCake(Flavor flavor, CakeType cakeType)
     {
-        Cake? newCake = cakeType == CakeType.Pancake
-            ? _pancakeOven.ProducePancake(flavor)
-            : _chimneyCakeOven.ProduceChimneyCake(flavor);
-
-        while (newCake == null)
+        Cake newCake;
+        try
+        {
+            newCake = (cakeType == CakeType.Pancake
+                ? _pancakeOven.Produce(flavor)
+                : _chimneyCakeOven.Produce(flavor))!;
+        }
+        catch (OutOfOilException)
         {
             _pancakeOven.FillOil();
-            newCake = _pancakeOven.ProducePancake(flavor);
+            newCake = _pancakeOven.Produce(flavor);
         }
         
         AddProfit(newCake);
-        Console.WriteLine($"We just sold a {newCake.ToString()}");
+        Console.WriteLine($"We just sold a {newCake}");
     }
 
     private void AddProfit(Cake cake)

@@ -10,10 +10,11 @@ public static class Program
         ChimneyCakeOven chimneyCakeOven = new ChimneyCakeOven();
         PancakeOven pancakeOven = new PancakeOven();
         CakeShop newShop = new CakeShop(chimneyCakeOven, pancakeOven);
+        
         FlavorProvider flavorProvider = new FlavorProvider();
         IGuestGenerator guestGenerator = new GuestGenerator(flavorProvider);
 
-        List<Guest> guests = guestGenerator.GenerateGuests(50);
+        IList<Guest> guests = guestGenerator.GenerateGuests(50);
         foreach (Guest guest in guests)
         {
             newShop.SellCake(guest.PreferredFlavor, guest.PreferredCake);

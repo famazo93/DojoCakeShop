@@ -1,13 +1,15 @@
+using DojoCakeShop.Exception;
+
 namespace DojoCakeShop.Model;
 
-public class PancakeOven : Oven
+public class PancakeOven : Oven, IOven
 {
     private static int _numberOfCakesBaked = 0;
     private bool _hasOil = _numberOfCakesBaked < 5;
     private readonly decimal _price = (decimal)1.0;
 
 
-    public Cake? ProducePancake(Flavor flavor)
+    public Cake Produce(Flavor flavor)
     {
         Console.WriteLine(_numberOfCakesBaked);
         Console.WriteLine(_hasOil);
@@ -16,9 +18,8 @@ public class PancakeOven : Oven
             _numberOfCakesBaked++;
             _hasOil = _numberOfCakesBaked < 5;
             return ProduceCake(flavor, CakeType.Pancake, _price);
-        } 
-        Console.WriteLine("The oven is out of oil!");
-        return null;
+        }
+        throw new OutOfOilException();
     }
 
     public void FillOil()
